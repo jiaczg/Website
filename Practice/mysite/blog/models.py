@@ -20,6 +20,10 @@ class Blog(models.Model):
     created_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     lsat_updated_time = models.DateTimeField(auto_now=True, verbose_name='修改时间')
 
+    def read_num(self):
+        return self.readnum.read_num
+        verbose_name = '阅读量'
+
     def __str__(self):
         return "<Blog: %s>" % self.title
 
