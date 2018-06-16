@@ -19,6 +19,40 @@
 
     <!-- 图表容器 DOM -->
     <div id="container"></div>
+    
+    <div class="hot-date">
+        <h3>今天热门博客</h3>
+        <ul>
+            {% for hot_date in today_hot_date %}
+                <li><a href="{% url 'blog_detail' hot_date.content_object.pk %}">{{ hot_date.content_object.title }}</a>({{ hot_date.read_num }})</li>
+            {% empty %}
+                <li>今天暂时没有热门博客</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="hot-date">
+        <h3>昨天热门博客</h3>
+        <ul>
+            {% for hot_date in yesterday_hot_date %}
+                <li><a href="{% url 'blog_detail' hot_date.content_object.pk %}">{{ hot_date.content_object.title }}</a>({{ hot_date.read_num }})</li>
+            {% empty %}
+                <li>昨天暂时没有热门博客</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="hot-date">
+        <h3>七天热门博客</h3>
+        <ul>
+            {% for hot_blog in hot_blogs_for_7_days %}
+                <li><a href="{% url 'blog_detail' hot_blog.id %}">{{ hot_blog.title }}</a>({{ hot_blog.read_num_sum }})</li>
+            {% empty %}
+                <li>昨天暂时没有热门博客</li>
+            {% endfor %}
+        </ul>
+    </div>
+
     <script>
         // 图表配置
         var options = {
@@ -27,6 +61,7 @@
             xAxis: {
                 categories: {{ dates|safe }},      // x 轴分类
                 tickmarkPlacement:'no', 
+                title:{ text: '前七日阅读量变化' },
             },  
             yAxis: {
                 title: { text: null },             // y 轴标题
