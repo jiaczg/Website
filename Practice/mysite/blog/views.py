@@ -2,7 +2,12 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.core.paginator import Paginator
 from django.conf import settings
 from django.db.models import Count
+<<<<<<< HEAD
 from read_statistics.utils import read_statistics_once_read
+=======
+from django.contrib.contenttypes.models import ContentType
+from read_statistics.models import ReadNum
+>>>>>>> c20bd6b7ac120328896a0ffab65bd760c25e2c51
 from .models import Blog, BlogType
 
 def get_blog_list_common_date(request,blogs_all_list):
@@ -60,7 +65,22 @@ def blogs_with_date(request,year,month):
 
 def blog_detail(request, blog_pk):
     blog = get_object_or_404(Blog, pk=blog_pk)
+<<<<<<< HEAD
     read_cookie_key = read_statistics_once_read(request, blog)
+=======
+    if not request.COOKIES.get('blog_%s_read' % blog_pk):
+        ct = ContentType.objects.get_for_model(Blog)
+        if ReadNum.objects.filter(content_type=ct, object_id=blog.pk).count():
+            # 存在记录
+            readnum = ReadNum.objects.get(content_type=ct, object_id=blog.pk)
+        else:
+            # 不存在记录
+            readnum = ReadNum(content_type=ct, object_id=blog.pk)
+        # 计数加一   
+        readnum.read_num += 1
+        readnum.save()
+        pass
+>>>>>>> c20bd6b7ac120328896a0ffab65bd760c25e2c51
 
     context = {}
     context['previous_blog'] = Blog.objects.filter(created_time__gt=blog.created_time).last()
