@@ -2,11 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericRelation
 from ckeditor_uploader.fields import RichTextUploadingField
-<<<<<<< HEAD
 from read_statistics.models import ReadNumExpandMethod, ReadDetail
-=======
 from read_statistics.models import ReadNumExpandMethod
->>>>>>> c20bd6b7ac120328896a0ffab65bd760c25e2c51
 
 class BlogType(models.Model):
     type_name = models.CharField(max_length=15, verbose_name='分类列表')
