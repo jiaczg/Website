@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response, get_object_or_404, render
+from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator
 from django.conf import settings
 from django.db.models import Count
@@ -6,7 +6,9 @@ from read_statistics.utils import read_statistics_once_read
 from django.contrib.contenttypes.models import ContentType
 from read_statistics.models import ReadNum
 from comment.models import Comment
+from comment.forms import CommentForm
 from .models import Blog, BlogType
+
 
 def get_blog_list_common_date(request,blogs_all_list):
     paginator = Paginator(blogs_all_list,settings.EACH_PAGE_BLOGS_NUMBER)  # 每页10条信息
@@ -53,13 +55,13 @@ def blogs_with_type(request, blog_type_pk):
     blogs_all_list = Blog.objects.filter(blog_type=blog_type)
     context = get_blog_list_common_date(request,blogs_all_list)
     context['blog_type'] = blog_type
-    return render(render, 'blog/blogs_with_type.html', context)
+    return render(request, 'blog/blogs_with_type.html', context)
 
 def blogs_with_date(request,year,month):
     blogs_all_list = Blog.objects.filter(created_time__year=year,created_time__month=month)
     context = get_blog_list_common_date(request,blogs_all_list)
     context['blogs_with_date'] = '%s年%s月' % (year,month)
-    return render(render, 'blog/blogs_with_date.html', context)
+    return render(request, 'blog/blogs_with_date.html', context)
 
 def blog_detail(request, blog_pk):
     blog = get_object_or_404(Blog, pk=blog_pk)
@@ -73,6 +75,7 @@ def blog_detail(request, blog_pk):
     context['blog'] = blog
     context['user'] = request.user
     context['comments'] = comments
+    context['comment_form'] = CommentForm(initial={'content_type':blog_content_type.model, 'object_id': blog_pk})
     response = render(request, 'blog/blog_detail.html', context)  # 响应
     response.set_cookie('blog_%s_read' % blog_pk, 'true')  # 阅读cookie标记
     return response

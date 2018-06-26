@@ -35,13 +35,13 @@ class RegForm(forms.Form):
 
     def clean_username(self):
         username = self.cleaned_data['username']
-        if User.objects.filter(username=username).exista():
+        if User.objects.filter(username=username).exists():
             raise forms.ValidationError('用户名已存在')
         return username
 
     def clean_email(self):
         email = self.cleaned_data['email']
-        if User.objects.filter(email=email).exista():
+        if User.objects.filter(email=email).exists():
             raise forms.ValidationError('该邮箱已存在')
         return email
 
