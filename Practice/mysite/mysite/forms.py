@@ -16,7 +16,7 @@ class LoginForm(forms.Form):
         if user is None:
             raise forms.ValidationError('用户名或密码不正确')
         else:
-            self.clean_data['user'] = user
+            self.cleaned_data['user'] = user
         return self.cleaned_data
 
 

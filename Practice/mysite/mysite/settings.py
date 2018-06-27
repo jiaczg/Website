@@ -136,6 +136,24 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 # 配置ckditor
 CKEDITOR_UPLOAD_PATH = 'upload/'
 
+CKEDITOR_CONFIGS = {
+    'comment_ckeditor':{
+        'toolbar':'custom',
+        'toolbar_custom':[
+            ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'],
+            ["TextColor", "BGColor", 'RemoveFormat'],
+            ['Link', 'Unlink'], 
+            ["Smiley", "SpecialChar", 'Blockquote'],
+        ],
+        'width': 'auto',
+        'height': '200',
+        'tabSpaces': 4,
+        'removePlugins': 'elementspatg',
+        'resizt_enabled': False,
+    }
+}
+
+
 #  自定义参数 
 EACH_PAGE_BLOGS_NUMBER = 5
 
