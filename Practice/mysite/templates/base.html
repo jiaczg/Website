@@ -15,11 +15,43 @@
     {% block header_extends %}{% endblock %}
 </head>
 
+
+<script type="text/javascript">
+    /* 鼠标点击特效 */
+    var a_idx = 0;
+    jQuery(document).ready(function($) {
+    $("body").click(function(e) {
+    var a = new Array("富强", "民主", "文明", "和谐", "自由", "平等", "公正" ,"法治", "爱国", "敬业", "诚信", "友善");
+    var $i = $("<span/>").text(a[a_idx]);
+    a_idx = (a_idx + 1) % a.length;
+    var x = e.pageX,
+    y = e.pageY;
+    $i.css({
+    "z-index": 99999,
+    "top": y - 20,
+    "left": x,
+    "position": "absolute",
+    "font-weight": "bold",
+    "color": "#ff6651"
+    });
+    $("body").append($i);
+    $i.animate({
+    "top": y - 180,
+    "opacity": 0
+    },
+    1500,
+    function() {
+    $i.remove();
+    });
+    });
+    });
+</script>
+
 <body>
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="{% url 'home' %}">博客网站</a>
+                <a class="navbar-brand" href="{% url 'home' %}">Jc's blog</a>
                 <button class="navbar-toggle collapsed" data-toggle="collapse"
                 data-target="#navbar-collapse">
                 <span class="icon-bar"></span>
@@ -33,6 +65,10 @@
                     <a href="{% url 'home' %}">首页</a></li>
                     <li class="{% block nav_blog_active %}{% endblock %}">
                     <a href="{% url 'blog_list' %}">博客</a></li>
+                    <li class="{% block nav_login_active %}{% endblock %}">
+                    <a href="{% url 'login' %}">登陆</a></li>
+                    <li class="{% block nav_register_active %}{% endblock %}">
+                    <a href="{% url 'register' %}">注册</a></li>
                 </ul>
             </div>
         </div>

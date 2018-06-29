@@ -131,31 +131,35 @@ STATICFILES_DIRS = [
 
 # media
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# 配置ckditor
+# 配置ckeditor
 CKEDITOR_UPLOAD_PATH = 'upload/'
 
 CKEDITOR_CONFIGS = {
+    'default': {
+    
+    },
     'comment_ckeditor':{
         'toolbar':'custom',
-        'toolbar_custom':[
+        'toolbar_custom': [
             ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'],
             ["TextColor", "BGColor", 'RemoveFormat'],
-            ['Link', 'Unlink'], 
+            ['NumberedList', 'BulletedList'],
+            ['Link', 'Unlink'],
             ["Smiley", "SpecialChar", 'Blockquote'],
         ],
         'width': 'auto',
         'height': '200',
         'tabSpaces': 4,
-        'removePlugins': 'elementspatg',
-        'resizt_enabled': False,
+        'removePlugins': 'elementspath',
+        'resize_enabled': False,
     }
+
 }
 
-
-#  自定义参数 
-EACH_PAGE_BLOGS_NUMBER = 5
+# 自定义参数
+EACH_PAGE_BLOGS_NUMBER = 7
 
 # 缓存设置
 CACHES = {

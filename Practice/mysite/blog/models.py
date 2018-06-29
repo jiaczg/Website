@@ -18,7 +18,7 @@ class BlogType(models.Model):
 class Blog(models.Model, ReadNumExpandMethod):
     title = models.CharField(max_length=50, verbose_name='文章标题')
     blog_type = models.ForeignKey(BlogType, on_delete=models.DO_NOTHING, verbose_name='文章分类')
-    content = RichTextUploadingField()
+    content = RichTextUploadingField(verbose_name='内容')
     author = models.ForeignKey(User, on_delete=models.DO_NOTHING, verbose_name='作者')
     read_details = GenericRelation(ReadDetail)
     created_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')

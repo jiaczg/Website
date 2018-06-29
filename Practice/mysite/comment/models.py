@@ -4,13 +4,15 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
 
 class Comment(models.Model):
-	content_type = models.ForeignKey(ContentType, on_delete=models.DO_NOTHING)
-	object_id = models.PositiveIntegerField()
-	content_object = GenericForeignKey('content_type', 'object_id')
+    content_type = models.ForeignKey(ContentType, on_delete=models.DO_NOTHING)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
 
-	text = models.TextField()
-	comment_time = models.DateTimeField(auto_now_add=True)
-	user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    text = models.TextField(verbose_name='评论内容')
+    comment_time = models.DateTimeField(auto_now_add=True, verbose_name='评论时间')
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, verbose_name='评论用户')
 
-	class Meta:
-		ordering = ['-comment_time']
+    class Meta:
+        ordering = ['-comment_time']
+        verbose_name = '评论列表'
+        verbose_name_plural = verbose_name
