@@ -51,14 +51,14 @@ class RegForm(forms.Form):
             raise forms.ValidationError('输入的密码不一致')
         return password_again
 
-class ChangeNicknameFrom(forms.Form):
+class ChangeNicknameForm(forms.Form):
     nickname_new = forms.CharField(label='新的昵称', max_length=20, widget=forms.TextInput(
                                    attrs={'class':'form-control', 'placeholder':'请输入新的昵称'}))
 
     def __init__(self, *args, **kwargs):
         if 'user' in kwargs:
             self.user = kwargs.pop('user')
-        super(ChangeNicknameFrom, self).__init__(*args, **kwargs)
+        super(ChangeNicknameForm, self).__init__(*args, **kwargs)
 
     def clean(self):
         # 判断用户是否登录

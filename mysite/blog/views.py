@@ -70,5 +70,5 @@ def blog_detail(request, blog_pk):
     context['next_blog'] = Blog.objects.filter(created_time__lt=blog.created_time).first()
     context['blog'] = blog
     response = render(request, 'blog/blog_detail.html', context)  # 响应
-    response.set_cookie('blog_%s_read' % blog_pk, 'true')  # 阅读cookie标记
+    response.set_cookie(read_cookie_key, 'true')  # 阅读cookie标记
     return response

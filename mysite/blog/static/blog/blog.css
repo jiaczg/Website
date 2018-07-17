@@ -15,13 +15,20 @@ div.blog p.blog-info {
 div.paginator {
     text-align: center;
 }
+h2.biao-title{
+    font-size: 20px;
+}
+h2.blog_title {
+    font-size: 30px;
+    text-align: center!important;
+}
 ul.blog-info-description {
+    text-align: center;
     list-style-type: none;
     margin-bottom: 1em;
-}
-ul.blog-info-description li {
     display: inline-block;
     margin-right: 1em;
+    text-align: center!important;
 }
 div.blog-content {
     text-indent: 2em;
@@ -37,7 +44,6 @@ div.comment-area{
     margin-top: 2em;
 }
 h3.comment-area-title{
-    border-bottom: 1px solid #ccc;
     padding-bottom: 0.4em;
 }
 div.django-ckeditor-widget{
@@ -67,7 +73,4 @@ div.like{
     cursor: pointer;
     display: inline-block;
     padding: 0.5em 0.3em;
-}
-p{
-    text-align:right;
 }

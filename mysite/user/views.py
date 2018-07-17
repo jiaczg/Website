@@ -3,7 +3,7 @@ from django.contrib import auth
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.http import JsonResponse
-from .forms import LoginForm, RegForm, ChangeNicknameFrom
+from .forms import LoginForm, RegForm, ChangeNicknameForm
 from .models import Profile
 
 
@@ -62,18 +62,18 @@ def user_info(request):
     return render(request, 'user/user_info.html', context)
 
 def change_nickname(request):
-    redirect_to = request.GET.get('form', reverse('home')) # 哪里来哪里去
+    redirect_to = request.GET.get('from', reverse('home')) # 哪里来哪里去
 
     if request.method =='POST':
-        form = ChangeNicknameFrom(request.POST, user=request.user)
+        form = ChangeNicknameForm(request.POST, user=request.user)
         if form.is_valid():
             nickname_new = form.cleaned_data['nickname_new']
             profile, created = Profile.objects.get_or_create(user=request.user)
-            Profile.nickname = nickname_new
+            profile.nickname = nickname_new
             profile.save()
             return redirect(redirect_to)
     else:
-        form = ChangeNicknameFrom()
+        form = ChangeNicknameForm()
 
     context = {}
     context['page_title'] = '修改昵称'
@@ -82,3 +82,24 @@ def change_nickname(request):
     context['form'] = form
     context['return_back_url'] = redirect_to
     return render(request, 'form.html', context)
+
+def bind_email(request):
+    redirect_to = request.GET.get('from', reverse('home'))  # 哪里来哪里去
+
+    if request.method == 'POST':
+        form = BindEmailForm(request.POST, request=request)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            request.user.email = email
+            request.user.save()
+            return redirect(redirect_to)
+    else:
+        form = BindEmailForm()
+
+    context = {}
+    context['page_title'] = '绑定邮箱'
+    context['form_title'] = '绑定邮箱'
+    context['submit_text'] = '绑定'
+    context['form'] = form
+    context['return_back_url'] = redirect_to
+    return render(request, 'user/bind_email.html', context)

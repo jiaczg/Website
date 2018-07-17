@@ -11,3 +11,6 @@ ul{
 ul.navbar-right {
 	margin-right: 0important;
 }
+div.navbar-brand{
+    height: 200px!important;
+}

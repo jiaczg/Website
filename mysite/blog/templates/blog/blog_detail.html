@@ -17,49 +17,63 @@
 
 {% block content %}
     <div class="container">
+
         <div class="row">
             <div class="col-xs-10 col-xs-offset-1">
-                <h3>{{ blog.title }}</h3>
-                <ul class="blog-info-description">
-                    <li>作者：{{ blog.author }}</li>
-                    <li>分类：<a href="{% url 'blogs_with_type' blog.blog_type.pk %}">{{ blog.blog_type }}</a></li>
-                    <li>发表日期：{{ blog.created_time|date:"Y-m-d H:i:s" }}</li>
-                    <li>阅读({{ blog.get_read_num }})</li>
-                    <li>评论({% get_comment_count blog %})</li>
-                </ul>              
-                <div class="blog-content">{{ blog.content|safe }}</div>
-                <div class="like" onclick="likeChange(this, '{% get_content_type blog %}', {{ blog.pk }})">
-                    <span class="glyphicon glyphicon-thumbs-up {% get_like_status blog %}"></span>
-                    <span class="liked-num">{% get_like_count blog %}</span>
-                    <span>喜欢</span>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 class="blog_title">{{ blog.title }}</h2>
+                    <ul class="blog-info-description">
+                        <li>作者：{{ blog.author }}</li>
+                        <li>分类：<a href="{% url 'blogs_with_type' blog.blog_type.pk %}">{{ blog.blog_type }}</a></li>
+                        <li>发表日期：{{ blog.created_time|date:"Y-m-d H:i:s" }}</li>
+                        <li>阅读({{ blog.get_read_num }})</li>
+                        <li>评论({% get_comment_count blog %})</li>
+                    </ul>
                 </div>
-                <div class="blog-more">
-                    <p>
-                        上一篇：
-                        {% if previous_blog %}
-                            <a href="{% url 'blog_detail' previous_blog.pk %}">{{ previous_blog.title }}</a>
-                        {% else %}
-                            暂无上一篇
-                        {% endif %}
-                    </p>
-                    <p>
-                        下一篇：
-                        {% if next_blog %}
-                            <a href="{% url 'blog_detail' next_blog.pk %}">{{ next_blog.title }}</a>
-                        {% else %}
-                            暂无下一篇
-                        {% endif %}
-                    </p>
+                <div class="panel-body">
+                    <div class="blog-content">{{ blog.content|safe }}</div>
+                        <div class="like" onclick="likeChange(this, '{% get_content_type blog %}', {{ blog.pk }})">
+                            <span class="glyphicon glyphicon-thumbs-up {% get_like_status blog %}"></span>
+                            <span class="liked-num">{% get_like_count blog %}</span>
+                            <span>喜欢</span>
+                        </div>
+                        <div class="blog-more">
+                            <nav aria-label="...">
+                                <ul class="pager">
+                                    <li class="previous">
+                                        {% if previous_blog %}
+                                        <a href="{% url 'blog_detail' previous_blog.pk %}">上一篇：{{ previous_blog.title }}</a>
+                                        {% else %}
+                                            <a class="previous disabled">暂无上一篇</a>
+                                        {% endif %}
+                                    </li>
+
+                                    <li class="next">
+                                        {% if next_blog %}
+                                            <a href="{% url 'blog_detail' next_blog.pk %}">下一篇：{{ next_blog.title }}</a>
+                                        {% else %}
+                                            <a class="previous disabled">暂无下一篇</a>
+                                        {% endif %}
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div class="col-xs-10 col-xs-offset-1">
-                <div class="comment-area">
-                    <h3 class="comment-area-title">提交评论</h3>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 class="biao-title">新的评论</h2>
+                </div>
+                <div class="panel-body">
                     {% if user.is_authenticated %}
                         <form id="comment_form" action="{% url 'update_comment' %}" method="POST" style="overflow:hidden">
-                            <label>{{ user.get_nickname_or_username }}，欢迎评论~</label>
+                            <label>{{ user.get_nickname_or_username }}，欢迎提出你的见解......</label>
                             <div id="reply_content_container" style="display:none;">
                                 <p id="reply_title">回复：</p>
                                 <div id="reply_content"></div>
@@ -73,57 +87,74 @@
                             <input type="submit" value="评论" class="btn btn-primary pull-right">
                         </form>
                     {% else %}
-                        您尚未登录，登录之后方可评论~ 
-                        <a class="btn btn-primary" href="{% url 'login' %}?from={{ request.get_full_path }}">登录</a>
-                        <span> or </span>
-                        <a class="btn btn-danger" href="{% url 'register' %}?from={{ request.get_full_path }}">注册</a>
+                        <form id="comment_form" action="{% url 'update_comment' %}" method="POST" style="overflow:hidden">
+                            <label>您尚未登录，请登录之后提出你的见解......</label>
+                            {% csrf_token %}
+                            {% get_comment_form blog as comment_form %}                  
+                            {% for field in comment_form %}
+                                {{ field }}
+                            {% endfor %}
+                            <span id="comment_error pull-right" class="text-danger pull-left"></span>
+                                <a class="btn btn-primary pull-right" href="{% url 'login' %}?from={{ request.get_full_path }}">登录</a>
+                            <span class="pull-right">&nbsp;&nbsp;</span>
+                                <a class="btn btn-danger pull-right" href="{% url 'register' %}?from={{ request.get_full_path }}">注册</a>
+                        </form>
                     {% endif %}
-                </div>
-                <div class="comment-area">
-                    <h3 class="comment-area-title">评论列表</h3>
-                    <div id="comment_list">
-                        {% get_comment_list blog as comments %}
-                        {% for comment in comments %}
-                            <div id="root_{{ comment.pk }}" class="comment">
-                                <span>{{ comment.get_nickname_or_username }}</span>
-                                <span>({{ comment.comment_time|date:"Y-m-d H:i:s" }})：</span>
-                                <div id="comment_{{ comment.pk }}">
-                                    {{ comment.text|safe }}
-                                </div>
-                                <div class="like" onclick="likeChange(this, '{% get_content_type comment %}', {{ comment.pk }})">
-                                    <span class="glyphicon glyphicon-thumbs-up {% get_like_status comment %}"></span>
-                                    <span class="liked-num">{% get_like_count comment %}</span>
-                                </div>
-                                <a href="javascript:reply({{ comment.pk }});">回复</a>
-
-                                
-                                {% for reply in comment.root_comment.all %}
-                                    <div class="reply">
-                                        <span>{{ reply.get_nickname_or_username }}</span>
-                                        <span>({{ reply.comment_time|date:"Y-m-d H:i:s" }})</span>
-                                        <span>回复</span>
-                                        <span>{{ reply.reply_to.get_nickname_or_username }}：</span>
-                                        <div id="comment_{{ reply.pk }}">
-                                            {{ reply.text|safe }}
-                                        </div>
-                                        <div class="like" onclick="likeChange(this, '{% get_content_type reply %}', {{ reply.pk }})">
-                                            <span class="glyphicon glyphicon-thumbs-up {% get_like_status reply %}"></span>
-                                            <span class="liked-num">{% get_like_count reply %}</span>
-                                        </div>
-                                        <a href="javascript:reply({{ reply.pk }});">回复</a>
-                                    </div>                                    
-                                {% endfor %}
-                            </div>
-                        {% empty %}
-                            <span id="no_comment">暂无评论</span>
-                        {% endfor %}
-                    </div>                    
                 </div>
             </div>
         </div>
+
+        <div class="comment-area">
+            <div class="col-xs-10 col-xs-offset-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 class="biao-title">评论列表</h2>
+                </div>
+                <div class="panel-body">
+                    <div id="comment_list">
+                    {% get_comment_list blog as comments %}
+                    {% for comment in comments %}
+                        <div id="root_{{ comment.pk }}" class="comment">
+                            <span>{{ comment.user.get_nickname_or_username }}</span>
+                            <span>({{ comment.comment_time|date:"Y-m-d H:i:s" }})：</span>
+                            <div id="comment_{{ comment.pk }}">
+                                {{ comment.text|safe }}
+                            </div>
+                            <div class="like" onclick="likeChange(this, '{% get_content_type comment %}', {{ comment.pk }})">
+                                <span class="glyphicon glyphicon-thumbs-up {% get_like_status comment %}"></span>
+                                <span class="liked-num">{% get_like_count comment %}</span>
+                            </div>
+                            <a href="javascript:reply({{ comment.pk }});">回复</a>
+
+                            
+                            {% for reply in comment.root_comment.all %}
+                                <div class="reply">
+                                    <span>{{ reply.user.get_nickname_or_username }}</span>
+                                    <span>({{ reply.comment_time|date:"Y-m-d H:i:s" }})</span>
+                                    <span>回复</span>
+                                    <span>{{ reply.reply_to.get_nickname_or_username }}：</span>
+                                    <div id="comment_{{ reply.pk }}">
+                                        {{ reply.text|safe }}
+                                    </div>
+                                    <div class="like" onclick="likeChange(this, '{% get_content_type reply %}', {{ reply.pk }})">
+                                        <span class="glyphicon glyphicon-thumbs-up {% get_like_status reply %}"></span>
+                                        <span class="liked-num">{% get_like_count reply %}</span>
+                                    </div>
+                                    <a href="javascript:reply({{ reply.pk }});">回复</a>
+                                </div>                                    
+                            {% endfor %}
+                        </div>
+                    {% empty %}
+                        <span id="no_comment">机智如你不发表一下见解？</span>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 {% endblock %}
-    
+
 {% block script_extends %}
     <script type="text/javascript">
         String.prototype.format = function(){

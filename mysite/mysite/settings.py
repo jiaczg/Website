@@ -155,11 +155,10 @@ CKEDITOR_UPLOAD_PATH = 'upload/'
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar':(
-            ['div', 'Source', '-', 'Save', 'NewPage', 'Preview', '-', 'Templates'],
-            ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-','Print','SpellChecker','Scayt'],
-            ['Undo', 'Redo', '-', 'Find', 'Replace', '-', 'SelectAll', 'RemoveFormat','-','Maximize', 'ShowBlocks', '-',"CodeSnippet", 'Subscript', 'Superscript'],
-            ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton','HiddenField'],
-            ['Bold', 'Italic', 'Underline', 'Strike', '-'],
+            ['div', 'Source', '-', 'Save', 'NewPage', 'Preview','Templates'],
+            ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord'],
+            ['Undo', 'Redo','Find', 'Replace', 'SelectAll', 'RemoveFormat','-','Maximize', 'ShowBlocks', '-',"CodeSnippet"],
+            ['Bold', 'Italic', 'Underline', 'Strike'],
             ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Blockquote'],
             ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
             ['Link', 'Unlink', 'Anchor'],
@@ -188,11 +187,11 @@ CKEDITOR_CONFIGS = {
     'comment_ckeditor':{
         'toolbar':'custom',
         'toolbar_custom': [
-            ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'],
-            ["TextColor", "BGColor", 'RemoveFormat'],
-            ['NumberedList', 'BulletedList'],
-            ['Link', 'Unlink'],
-            ["Smiley", "SpecialChar", 'Blockquote'],
+            # ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'],
+            # ["TextColor", "BGColor", 'RemoveFormat'],
+            # ['NumberedList', 'BulletedList'],
+            # ['Link', 'Unlink'],
+            ["Smiley"],
         ],
 
     'smiley_images':[

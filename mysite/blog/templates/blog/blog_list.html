@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {# 页面标题 #}
-{% block title%}文章列表{% endblock %}
+{% block title%}执剑人的文章{% endblock %}
 {% block nav_blog_active %}active{% endblock %}
 
 {% load staticfiles %}
@@ -10,9 +10,10 @@
 
 {% block header_extends %}
     <link rel="stylesheet" href="{% static 'blog/blog.css' %}">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_8d5l8fzk5b87iudi.css">
 {% endblock %}
 
-{# 页面内容 #}
+
 {% block content %}
     <div class="container">
         <div class="row">
@@ -24,11 +25,11 @@
                                 <div class="blog">
                                     <h3><a href="{% url 'blog_detail' blog.pk %}">{{ blog.title }}</a></h3>
                                     <p class="blog-info">
-                                        <span class="glyphicon glyphicon-tag"></span><a href="{% url 'blogs_with_type' blog.blog_type.pk %}">{{ blog.blog_type }}</a> &nbsp;&nbsp;
+                                        <span class="glyphicon glyphicon-list"></span><a href="{% url 'blogs_with_type' blog.blog_type.pk %}">{{ blog.blog_type }}</a> &nbsp;&nbsp;
                                         <span class="glyphicon glyphicon-time"></span>{{ blog.created_time|date:"Y-m-d" }}&nbsp;&nbsp;
-                                        阅读({{ blog.get_read_num }})&nbsp;&nbsp;
-                                        评论({% get_comment_count blog %})&nbsp;&nbsp;
-                                        点赞({% get_like_count blog %})
+                                        <span class="glyphicon glyphicon-eye-open"></span>阅读({{ blog.get_read_num }})&nbsp;&nbsp;
+                                        <span class="{glyphicon glyphicon-comment}"></span>评论({% get_comment_count blog %})&nbsp;&nbsp;
+                                        <i class="iconfont icon-i-good"></i>点赞({% get_like_count blog %})
                                     </p>
                                     <p>{{ blog.content|striptags|truncatechars:25 }}</p>
                                 </div>
